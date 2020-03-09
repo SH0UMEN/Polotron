@@ -4,17 +4,18 @@
     background-color: transparent
     border: none
     color: $fontColor
-    transition: background-color .3s, color .3s, border-color .3s
+    transition: background-color .3s, color .3s, border-color .3s, box-shadow .3s
     cursor: pointer !important
     outline: none
-    height: 30px
-    width: 30px
+    width: 100%
+    padding: 10px
+    font-size: 16px
     display: flex
     align-items: center
     justify-content: center
 
     &:hover
-        color: $mainColor
+        color: lighten($mainColor, 10%)
         background-color: $accentColor
 
     &_bordered
@@ -22,3 +23,11 @@
 
         &:hover
             border-color: $accentColor
+
+    &_filled
+        background-color: $accentColor
+        color: $mainColor
+        font-weight: 500
+
+        &:hover
+            box-shadow: 0px -5px 10px transparentize($accentColor, .75)

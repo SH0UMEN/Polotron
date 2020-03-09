@@ -7,6 +7,10 @@
 <script>
     export default {
         name: 'polotron',
+
+        created() {
+            this.$store.commit("reset");
+        }
     }
 </script>
 

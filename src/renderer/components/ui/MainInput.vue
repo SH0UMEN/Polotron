@@ -1,7 +1,7 @@
 <template>
     <label class="main-input">
         <input class="main-input__input" :placeholder="placeholder"
-               type="text" v-model="tValue" @input="$emit('input', tValue)">
+               :type="type" v-model="tValue" @input="input">
     </label>
 </template>
 
@@ -12,6 +12,10 @@
             placeholder: {
                 type: String,
                 default: ""
+            },
+            type: {
+                type: String,
+                default: 'text'
             },
             value: {
                 required: true,
@@ -26,6 +30,11 @@
         watch: {
             value(value) {
                 this.tValue = value
+            }
+        },
+        methods: {
+            input(e) {
+                this.$emit('input', this.type == "number" ? parseInt(this.tValue) : this.tValue)
             }
         }
     }

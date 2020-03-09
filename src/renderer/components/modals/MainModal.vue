@@ -26,7 +26,7 @@
             }
         },
         components: {
-            MainButton
+            MainButton,
         }
     }
 </script>

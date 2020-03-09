@@ -1,5 +1,5 @@
 <template>
-    <button class="main-button" :class="{ 'main-button_bordered': bordered }" @click="$emit('click')">
+    <button class="main-button" :class="{ 'main-button_bordered': bordered, 'main-button_filled': filled }" @click="$emit('click')">
         <slot></slot>
     </button>
 </template>
@@ -9,6 +9,10 @@
         name: "Button",
         props: {
             bordered: {
+                type: Boolean,
+                default: false
+            },
+            filled: {
                 type: Boolean,
                 default: false
             }
