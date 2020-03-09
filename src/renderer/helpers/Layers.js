@@ -107,6 +107,7 @@ export class DEM extends Layer {
                             row.push(arrayBuffer.readFloatLE(4*count));
                             count++;
                         }
+
                         this.data.push(row);
                     }
 

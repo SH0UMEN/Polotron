@@ -1,20 +1,20 @@
 const state = {
-    layers: []
+    layers: [],
 };
 
 const mutations = {
-    addLayer(state, layer) {
-        state.layers.push(layer)
+    addLayer(state, layerID) {
+        state.layers.push(layerID)
     },
     reset(state) {
         state.layers = []
-    }
+    },
 };
 
 const getters = {
     getLayersList(state) {
         return state.layers
-    }
+    },
 }
 
 export default {

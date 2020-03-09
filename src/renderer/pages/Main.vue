@@ -1,10 +1,6 @@
 <template>
   <main>
-    <div>
-      <canvas v-for="layer,i in $store.getters.getLayersList" :key="i"
-              :ref="'canvas-'+i" height="0" width="0">
-      </canvas>
-    </div>
+    <viewer></viewer>
     <grd-modal></grd-modal>
   </main>
 </template>
@@ -14,36 +10,23 @@
         path = require('path');
 
   import GrdModal from "../components/modals/GrdModal"
-  import Layer from "../components/Layer"
-  import LayersStore from "../helpers/LayersStore"
-  import Vue from "vue"
+  import Viewer from "../components/Viewer"
 
   export default {
     name: 'MainWindow',
     data() {
       return {
-        layersStore: Vue.Observable(LayersStore.getInstance())
+
       }
     },
     components: {
       GrdModal,
-      Layer
+      Viewer
     },
     mounted() {
       electron.ipcRenderer.on('openGRD', (event) => {
         this.$modal.show('grd-modal')
       })
-    },
-    watch: {
-      layersStore(layers) {
-        console.log('hey');
-        this.$nextTick(()=>{
-          for(let i = 0; i < layers.length; i++) {
-            if(!layers[i].isDrawed) {
-            }
-          }
-        });
-      }
     },
   }
 </script>

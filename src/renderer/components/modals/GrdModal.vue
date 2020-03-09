@@ -32,8 +32,6 @@
     import {DEM} from "../../helpers/Layers"
     import LayersStore from "../../helpers/LayersStore"
     const path = require('path');
-    const fs = require('fs');
-    const g2 = require('gradient2')
 
     export default {
         name: "GrdModal",
@@ -56,9 +54,11 @@
                 this.layerName = path.basename(e[0]).split(".")[0]
             },
             readMatrix() {
-                let layer = new DEM(this.layerName, this.fileNames[0], "GRD", this.levels);
-                let store = LayersStore.getInstance();
-                store.addLayer(layer);
+                let store = LayersStore.getInstance(),
+                    layer = new DEM(this.layerName, this.fileNames[0], "GRD", this.levels),
+                    id = store.addLayer(layer);
+
+                this.$store.commit('addLayer', id);
                 this.$modal.hide('grd-modal');
                 this.fileNames = [];
                 this.layerName = "";

@@ -1,6 +1,7 @@
 class LayersStore {
     static instance = null;
-    layers = []
+    layers = {};
+    IDCounter = 0;
 
     static getInstance() {
         if (!LayersStore.instance) {
@@ -11,7 +12,9 @@ class LayersStore {
     }
 
     addLayer(layer) {
-        this.layers.push(layer)
+        this.IDCounter += 1;
+        this.layers[this.IDCounter] = layer;
+        return this.IDCounter;
     }
 }
 
