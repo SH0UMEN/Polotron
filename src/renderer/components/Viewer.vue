@@ -2,7 +2,7 @@
     <v-zoomer ref="zoomer" :limit-translation="false" :min-scale="0.1" class="viewer">
         <div class="viewer__inner" @mousedown="isDragged = true" @mouseup="isDragged = false"
              :class="{ 'viewer__inner_dragged': isDragged }" >
-            <div class="viewer__layer-wrapper" v-for="layerID in $store.getters.getLayersList"
+            <div class="viewer__layer-wrapper" v-for="layerID in $store.state.Layers.layers.map(x=>x).reverse()"
                  :class="{ 'viewer__layer-wrapper_hidden': layersStore.layers[layerID].hidden }" :key="layerID">
                 <canvas class="viewer__layer" :ref="'canvas-'+layerID" height="0" width="0"></canvas>
             </div>

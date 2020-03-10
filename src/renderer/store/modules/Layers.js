@@ -4,7 +4,7 @@ const state = {
 
 const mutations = {
     addLayer(state, layerID) {
-        state.layers.push(layerID)
+        state.layers.unshift(layerID)
     },
     setLayers(state, newLayers) {
         state.layers = newLayers;

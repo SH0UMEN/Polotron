@@ -28,16 +28,17 @@ export class Layer {
 export class DEM extends Layer {
     Nx; Ny; Zmin; Zmax; Xmin; Xmax; Ymin; Ymax; data = [];
 
-    constructor(title, filename, type, levels, clipping, hiding) {
+    constructor(title, filename, type, levels, clipping, hiding, palette) {
         super(title, filename, type);
         this.levels = levels;
         this.clipping = clipping;
         this.hiding = hiding;
+        this.palette = palette
     }
 
     draw() {
         let grad = new g2({
-            colors: ['#00a300', '#ff0', '#f00'],
+            colors: this.palette,
             steps: this.levels,
             model: 'rgb'
         });

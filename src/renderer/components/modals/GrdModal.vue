@@ -21,9 +21,14 @@
             </div>
 
             <div class="modal__form-field">
-                <span class="modal__form-field-title">Не показывать с/по (%): </span>
-                <slider v-model="hidingInterval" class="modal__form-range"></slider>
+                <span class="modal__form-field-title">Цветовая палитра: </span>
+                <palette-input v-model="colors"></palette-input>
             </div>
+
+            <!--<div class="modal__form-field">-->
+                <!--<span class="modal__form-field-title">Не показывать с/по (%): </span>-->
+                <!--<slider v-model="hidingInterval" class="modal__form-range"></slider>-->
+            <!--</div>-->
         </form>
 
         <div class="modal__bottom">
@@ -43,6 +48,7 @@
     import 'vue-slider-component/theme/antd.css'
     import {DEM} from "../../helpers/Layers"
     import LayersStore from "../../helpers/LayersStore"
+    import PaletteInput from "../ui/PaletteInput"
     const path = require('path');
 
     export default {
@@ -52,7 +58,8 @@
             MainInput,
             FileInput,
             MainButton,
-            Slider
+            Slider,
+            PaletteInput
         },
         data() {
             return {
@@ -61,7 +68,8 @@
                 levels: 20,
                 clippingInterval: [0, 100],
                 hidingInterval: [0, 100],
-                inProcess: false
+                inProcess: false,
+                colors: ['#000000', '#000000']
             }
         },
         methods: {
@@ -70,7 +78,8 @@
             },
             readMatrix() {
                 let store = LayersStore.getInstance(),
-                    layer = new DEM(this.layerName, this.fileNames[0], "GRD", this.levels, this.clippingInterval, this.hidingInterval),
+                    layer = new DEM(this.layerName, this.fileNames[0], "GRD", this.levels,
+                                    this.clippingInterval, this.hidingInterval, this.colors),
                     id = store.addLayer(layer);
 
                 this.$store.commit('addLayer', id);

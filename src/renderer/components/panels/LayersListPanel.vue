@@ -1,7 +1,7 @@
 <template>
     <div class="layers-list-panel">
         <draggable class="layers-list-panel__container" v-model="layersID" @change="orderChanged" @start="drag=true" @end="drag=false">
-            <div class="layers-list-panel__layer" v-for="id in layersID.map(x => x).reverse()">
+            <div class="layers-list-panel__layer" v-for="id in layersID">
                 <i class="fas fa-ellipsis-v layers-list-panel__drag"></i>
                 <span class="layers-list-panel__layer-title">{{ layers[id].title }} ({{ id }})</span>
                 <label class="layers-list-panel__vis-changer">
