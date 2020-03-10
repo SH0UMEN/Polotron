@@ -14,6 +14,16 @@
                 <span class="modal__form-field-title">Кол-во интервалов: </span>
                 <main-input type="number" class="modal__form-field-input" v-model="levels"></main-input>
             </div>
+
+            <div class="modal__form-field">
+                <span class="modal__form-field-title">Обрезать с/по (%): </span>
+                <slider v-model="clippingInterval" class="modal__form-range"></slider>
+            </div>
+
+            <div class="modal__form-field">
+                <span class="modal__form-field-title">Не показывать с/по (%): </span>
+                <slider v-model="hidingInterval" class="modal__form-range"></slider>
+            </div>
         </form>
 
         <div class="modal__bottom">
@@ -29,6 +39,8 @@
     import MainInput from "../ui/MainInput"
     import FileInput from "../ui/FileInput"
     import MainButton from "../ui/Button"
+    import Slider from '../ui/Slider'
+    import 'vue-slider-component/theme/antd.css'
     import {DEM} from "../../helpers/Layers"
     import LayersStore from "../../helpers/LayersStore"
     const path = require('path');
@@ -39,13 +51,16 @@
             MainModal,
             MainInput,
             FileInput,
-            MainButton
+            MainButton,
+            Slider
         },
         data() {
             return {
                 fileNames: [],
                 layerName: "",
                 levels: 20,
+                clippingInterval: [0, 100],
+                hidingInterval: [0, 100],
                 inProcess: false
             }
         },
@@ -55,7 +70,7 @@
             },
             readMatrix() {
                 let store = LayersStore.getInstance(),
-                    layer = new DEM(this.layerName, this.fileNames[0], "GRD", this.levels),
+                    layer = new DEM(this.layerName, this.fileNames[0], "GRD", this.levels, this.clippingInterval, this.hidingInterval),
                     id = store.addLayer(layer);
 
                 this.$store.commit('addLayer', id);

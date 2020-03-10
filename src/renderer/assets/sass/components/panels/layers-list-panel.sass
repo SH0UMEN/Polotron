@@ -1,0 +1,32 @@
+@import "../../vars"
+
+.layers-list-panel
+    &__drag, &__vis-changer
+        height: 26px
+        width: 26px
+        display: flex !important
+        align-items: center
+        justify-content: center
+
+    &__drag
+        color: $accentColor
+
+    &__layer
+        cursor: move
+        align-items: center
+        display: flex
+        border-bottom: 1px solid lighten($mainColor, 30%)
+
+    &__vis-changer
+        cursor: pointer
+        border-left: 1px solid lighten($mainColor, 30%)
+        margin-left: auto
+
+        input
+            position: absolute
+            visibility: hidden
+            height: 0
+            width: 0
+
+            &:checked+i
+                display: none

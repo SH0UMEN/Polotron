@@ -1,5 +1,5 @@
 <template>
-    <modal :clickToClose="false" :draggable="true" :name="name" class="modal">
+    <modal height="auto" :clickToClose="false" draggable=".modal__header" :name="name" class="modal">
         <div class="modal__header">
             <span class="modal__title">{{ title }}</span>
             <main-button :bordered="true" @click="$modal.hide(name)" class="modal__close">&times;</main-button>

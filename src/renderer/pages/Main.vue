@@ -1,6 +1,7 @@
 <template>
   <main>
     <viewer></viewer>
+    <layers-list-panel></layers-list-panel>
     <grd-modal></grd-modal>
   </main>
 </template>
@@ -9,6 +10,7 @@
   const electron = require('electron'),
         path = require('path');
 
+  import LayersListPanel from "../components/panels/LayersListPanel"
   import GrdModal from "../components/modals/GrdModal"
   import Viewer from "../components/Viewer"
 
@@ -21,7 +23,8 @@
     },
     components: {
       GrdModal,
-      Viewer
+      Viewer,
+      LayersListPanel
     },
     mounted() {
       electron.ipcRenderer.on('openGRD', (event) => {
