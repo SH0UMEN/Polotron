@@ -16,6 +16,10 @@ class LayersStore {
         this.layers[this.IDCounter] = layer;
         return this.IDCounter;
     }
+
+    deleteLayer(layerID) {
+        this.layers[layerID] = null;
+    }
 }
 
 export default LayersStore;

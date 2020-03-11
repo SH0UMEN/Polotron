@@ -3,6 +3,7 @@
     <viewer></viewer>
     <layers-list-panel></layers-list-panel>
     <grd-modal></grd-modal>
+    <grd-props-modal v-if="this.$store.state.Layers.selectedLayer"></grd-props-modal>
   </main>
 </template>
 
@@ -12,6 +13,7 @@
 
   import LayersListPanel from "../components/panels/LayersListPanel"
   import GrdModal from "../components/modals/GrdModal"
+  import GrdPropsModal from "../components/modals/GrdPropsModal"
   import Viewer from "../components/Viewer"
 
   export default {
@@ -23,6 +25,7 @@
     },
     components: {
       GrdModal,
+      GrdPropsModal,
       Viewer,
       LayersListPanel
     },

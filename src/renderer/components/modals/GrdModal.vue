@@ -24,11 +24,6 @@
                 <span class="modal__form-field-title">Цветовая палитра: </span>
                 <palette-input v-model="colors"></palette-input>
             </div>
-
-            <!--<div class="modal__form-field">-->
-                <!--<span class="modal__form-field-title">Не показывать с/по (%): </span>-->
-                <!--<slider v-model="hidingInterval" class="modal__form-range"></slider>-->
-            <!--</div>-->
         </form>
 
         <div class="modal__bottom">
@@ -68,8 +63,8 @@
                 levels: 20,
                 clippingInterval: [0, 100],
                 hidingInterval: [0, 100],
-                inProcess: false,
-                colors: ['#000000', '#000000']
+                colors: ['#00ff00', '#ff0000'],
+                inProcess: false
             }
         },
         methods: {
@@ -77,16 +72,23 @@
                 this.layerName = path.basename(e[0]).split(".")[0]
             },
             readMatrix() {
-                let store = LayersStore.getInstance(),
-                    layer = new DEM(this.layerName, this.fileNames[0], "GRD", this.levels,
-                                    this.clippingInterval, this.hidingInterval, this.colors),
-                    id = store.addLayer(layer);
+                if(!this.inProcess) {
+                    this.inProcess = true;
+                    let store = LayersStore.getInstance(),
+                        layer = new DEM(this.layerName, this.fileNames[0], "GRD", this.levels,
+                            this.clippingInterval, this.hidingInterval, this.colors),
+                        id = store.addLayer(layer);
 
-                this.$store.commit('addLayer', id);
-                this.$modal.hide('grd-modal');
-                this.fileNames = [];
-                this.layerName = "";
-                this.levels = 20;
+                    this.$store.commit('addLayer', id);
+                    this.$modal.hide('grd-modal');
+                    this.fileNames = [];
+                    this.layerName = "";
+                    this.levels = 20;
+                    this.clippingInterval = [0, 100];
+                    this.hidingInterval = [0, 100];
+                    this.colors = ['#00ff00', '#ff0000'];
+                    this.inProcess = false;
+                }
             }
         }
     }

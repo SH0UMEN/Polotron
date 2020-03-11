@@ -1,5 +1,6 @@
 const state = {
     layers: [],
+    selectedLayer: undefined,
 };
 
 const mutations = {
@@ -16,7 +17,16 @@ const mutations = {
         let t = state.layers;
         state.layers = [];
         state.layers = t;
-    }
+    },
+    selectLayer(state, layerID) {
+        state.selectedLayer = layerID;
+    },
+    removeLayer(state, layerID) {
+        state.layers.splice(state.layers.indexOf(layerID), 1);
+    },
+};
+
+const actions = {
 };
 
 const getters = {
@@ -25,11 +35,12 @@ const getters = {
     },
     getReversedLayersList(state) {
         return state.layers.map(x => x).reverse()
-    }
+    },
 }
 
 export default {
     getters,
     state,
-    mutations
+    mutations,
+    actions
 }

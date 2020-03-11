@@ -3,7 +3,6 @@ import axios from 'axios'
 import VModal from 'vue-js-modal'
 import VueZoomer from 'vue-zoomer'
 
-
 Vue.use(VueZoomer)
 Vue.use(VModal)
 

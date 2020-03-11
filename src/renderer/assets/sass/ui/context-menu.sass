@@ -1,0 +1,25 @@
+@import "../vars"
+
+.context-menu-wrapper
+    .v-context
+        border-radius: 0
+        padding: 0
+        display: flex
+        flex-direction: column
+        background-color: lighten($mainColor, 25%)
+        border-color: lighten($mainColor, 40%)
+
+        li
+            display: flex
+            padding-left: 16px
+            padding-right: 3px
+
+            button
+                cursor: pointer
+                outline: none
+                height: 27px
+                color: $fontColor
+                background-color: transparent
+                width: 100%
+                text-align: left
+                border: none
