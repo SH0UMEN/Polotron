@@ -4,6 +4,7 @@
     <layers-list-panel></layers-list-panel>
     <grd-modal></grd-modal>
     <grd-props-modal></grd-props-modal>
+    <grd-animation-modal></grd-animation-modal>
   </main>
 </template>
 
@@ -14,6 +15,7 @@
   import LayersListPanel from "../components/panels/LayersListPanel"
   import GrdModal from "../components/modals/GrdModal"
   import GrdPropsModal from "../components/modals/GrdPropsModal"
+  import GrdAnimationModal from "../components/modals/GrdAnimationModal"
   import Viewer from "../components/Viewer"
 
   export default {
@@ -27,11 +29,15 @@
       GrdModal,
       GrdPropsModal,
       Viewer,
-      LayersListPanel
+      LayersListPanel,
+      GrdAnimationModal
     },
     mounted() {
       electron.ipcRenderer.on('openGRD', (event) => {
         this.$modal.show('grd-modal')
+      }),
+      electron.ipcRenderer.on('openGRDAnimation', (event) => {
+        this.$modal.show('grd-animation-modal')
       })
     },
   }

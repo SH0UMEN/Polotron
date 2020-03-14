@@ -104,7 +104,6 @@
                 layer.levels = this.levels;
                 layer.clipping = this.clippingInterval;
                 layer.hiding = [this.hidingMin, this.hidingMax];
-                console.log(layer.hiding);
                 layer.draw();
                 this.$store.commit("redraw");
                 this.$modal.hide('grd-props-modal');

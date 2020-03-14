@@ -1,3 +1,5 @@
+import LayersStore from '../../helpers/LayersStore'
+
 const state = {
     layers: [],
     selectedLayer: 0,
@@ -21,6 +23,9 @@ const mutations = {
         state.selectedLayer = layerID;
     },
     removeLayer(state, layerID) {
+        let store = LayersStore.getInstance();
+        store.layers[layerID].destroy();
+        store.deleteLayer(layerID);
         state.layers.splice(state.layers.indexOf(layerID), 1);
     },
 };

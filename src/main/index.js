@@ -44,6 +44,12 @@ app.on('ready', () => {
               click: () => {
                 mainWindow.webContents.send('openGRD')
               }
+            },
+            {
+              label: 'Анимировать набор матриц высот (.grd)',
+              click: () => {
+                mainWindow.webContents.send('openGRDAnimation')
+              }
             }
           ]
         }

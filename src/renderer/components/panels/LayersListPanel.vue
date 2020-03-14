@@ -52,7 +52,6 @@
                 this.$store.commit('redraw');
             },
             deleteLayer() {
-                this.layersStore.deleteLayer(this.selectedLayer);
                 this.$store.commit('removeLayer', this.selectedLayer);
             },
             openMenu(e, id) {
