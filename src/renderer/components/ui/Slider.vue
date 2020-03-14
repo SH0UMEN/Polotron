@@ -1,5 +1,5 @@
 <template>
-    <vue-slider :silent="true" v-model="tValue" class="slider" :minRange="minRange" :maxRange="maxRange"></vue-slider>
+    <vue-slider :silent="true" :interval="interval" v-model="tValue" class="slider" :min="min" :max="max"></vue-slider>
 </template>
 
 <script>
@@ -15,13 +15,17 @@
                 type: [Array, Number],
                 default: 0
             },
-            minRange: {
+            min: {
                 type: Number,
                 default: 0,
             },
-            maxRange: {
+            max: {
                 type: Number,
                 default: 100,
+            },
+            interval: {
+                type: Number,
+                default: 1
             }
         },
         data() {

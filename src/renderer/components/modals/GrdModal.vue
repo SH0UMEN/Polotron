@@ -41,7 +41,7 @@
     import MainButton from "../ui/Button"
     import Slider from '../ui/Slider'
     import 'vue-slider-component/theme/antd.css'
-    import {DEM} from "../../helpers/Layers"
+    import {GRD} from "../../helpers/Layers"
     import LayersStore from "../../helpers/LayersStore"
     import PaletteInput from "../ui/PaletteInput"
     const path = require('path');
@@ -62,7 +62,6 @@
                 layerName: "",
                 levels: 20,
                 clippingInterval: [0, 100],
-                hidingInterval: [0, 100],
                 colors: ['#00ff00', '#ff0000'],
                 inProcess: false
             }
@@ -75,8 +74,8 @@
                 if(!this.inProcess) {
                     this.inProcess = true;
                     let store = LayersStore.getInstance(),
-                        layer = new DEM(this.layerName, this.fileNames[0], "GRD", this.levels,
-                            this.clippingInterval, this.hidingInterval, this.colors),
+                        layer = new GRD(this.layerName, this.fileNames[0], this.levels,
+                            this.clippingInterval, this.colors),
                         id = store.addLayer(layer);
 
                     this.$store.commit('addLayer', id);

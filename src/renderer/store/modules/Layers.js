@@ -1,6 +1,6 @@
 const state = {
     layers: [],
-    selectedLayer: undefined,
+    selectedLayer: 0,
 };
 
 const mutations = {
@@ -14,9 +14,8 @@ const mutations = {
         state.layers = []
     },
     redraw(state) {
-        let t = state.layers;
-        state.layers = [];
-        state.layers = t;
+        state.layers.push('0');
+        state.layers.pop();
     },
     selectLayer(state, layerID) {
         state.selectedLayer = layerID;
@@ -31,10 +30,7 @@ const actions = {
 
 const getters = {
     getLayersList(state) {
-        return state.layers
-    },
-    getReversedLayersList(state) {
-        return state.layers.map(x => x).reverse()
+        return state.layers;
     },
 }
 

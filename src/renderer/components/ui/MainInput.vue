@@ -1,6 +1,6 @@
 <template>
     <label class="main-input">
-        <input class="main-input__input" :placeholder="placeholder"
+        <input step="any" class="main-input__input" :placeholder="placeholder"
                :type="type" v-model="tValue" @input="input">
     </label>
 </template>
@@ -34,7 +34,7 @@
         },
         methods: {
             input(e) {
-                this.$emit('input', this.type == "number" ? parseInt(this.tValue) : this.tValue)
+                this.$emit('input', this.type == "number" ? parseFloat(this.tValue) : this.tValue)
             }
         }
     }

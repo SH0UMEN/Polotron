@@ -1,6 +1,11 @@
 <template>
-    <main-modal :title="'Настройка слоя '" name="grd-props-modal">
+    <main-modal :title="'Настройка слоя '" @before-open="setLayer" name="grd-props-modal">
         <form action="" class="modal__form">
+            <div class="modal__form-field">
+                <div class="zs">
+                    Интервал высот: [{{ zMin }} ; {{ zMax }}]
+                </div>
+            </div>
             <div class="modal__form-field">
                 <span class="modal__form-field-title">Название слоя: </span>
                 <main-input class="modal__form-field-input" v-model="layerName"></main-input>
@@ -21,14 +26,17 @@
                 <palette-input v-model="colors"></palette-input>
             </div>
 
-            <!--<div class="modal__form-field">-->
-            <!--<span class="modal__form-field-title">Не показывать с/по (%): </span>-->
-            <!--<slider v-model="hidingInterval" class="modal__form-range"></slider>-->
-            <!--</div>-->
+            <div class="modal__form-field">
+                <span class="modal__form-field-title">Показывать с/по: </span>
+                <div class="inputs">
+                    <main-input type="number" v-model.number="hidingMin"></main-input>
+                    <main-input type="number" v-model.number="hidingMax"></main-input>
+                </div>
+            </div>
         </form>
 
         <div class="modal__bottom">
-            <main-button :disabled="inProcess" :filled="true" @click="readMatrix">
+            <main-button :disabled="inProcess" :filled="true" @click="redraw">
                 Построить
             </main-button>
         </div>
@@ -57,42 +65,54 @@
         },
         data() {
             return {
-                layer: LayersStore.getInstance().layers[this.$store.state.Layers.selectedLayer],
-                layerName: this.layer.name,
-                levels: this.layer.levels,
+                layerID: 0,
+                layerName: "",
+                levels: 20,
                 clippingInterval: [0, 100],
-                hidingInterval: [0, 100],
+                hidingMin: 0,
+                hidingMax: 0,
+                zMin: 0,
+                zMax: 0,
                 colors: ['#00ff00', '#ff0000'],
                 inProcess: false
             }
         },
+        watch: {
+            // layerID(val) {
+            //     console.log(val);
+            //     let layer = this.layers[val];
+            //     this.layerName = layer.title;
+            //     this.lavels = layer.levels;
+            // }
+        },
         methods: {
-            fileNameChanged(e) {
-                this.layerName = path.basename(e[0]).split(".")[0]
+            setLayer() {
+                this.layerID = this.$store.state.Layers.selectedLayer;
+                let layer = LayersStore.getInstance().layers[this.layerID];
+                this.layerName = layer.title;
+                this.levels = layer.levels;
+                this.clippingInterval = layer.clipping;
+                this.zMin = layer.Zmin;
+                this.zMax = layer.Zmax;
+                this.colors = layer.palette;
+                this.hidingMin = layer.hiding[0];
+                this.hidingMax = layer.hiding[1];
             },
-            readMatrix() {
-                if(!this.inProcess) {
-                    this.inProcess = true;
-                    let store = LayersStore.getInstance(),
-                        layer = new DEM(this.layerName, this.fileNames[0], "GRD", this.levels,
-                            this.clippingInterval, this.hidingInterval, this.colors),
-                        id = store.addLayer(layer);
-
-                    this.$store.commit('addLayer', id);
-                    this.$modal.hide('grd-modal');
-                    this.fileNames = [];
-                    this.layerName = "";
-                    this.levels = 20;
-                    this.clippingInterval = [0, 100];
-                    this.hidingInterval = [0, 100];
-                    this.colors = ['#00ff00', '#ff0000'];
-                    this.inProcess = false;
-                }
+            redraw() {
+                let layer = LayersStore.getInstance().layers[this.layerID];
+                layer.title = this.layerName;
+                layer.levels = this.levels;
+                layer.clipping = this.clippingInterval;
+                layer.hiding = [this.hidingMin, this.hidingMax];
+                console.log(layer.hiding);
+                layer.draw();
+                this.$store.commit("redraw");
+                this.$modal.hide('grd-props-modal');
             }
         }
     }
 </script>
 
-<style scoped>
+<style lang="sass">
 
 </style>

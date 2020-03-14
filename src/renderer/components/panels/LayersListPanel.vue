@@ -58,10 +58,10 @@
             openMenu(e, id) {
                 this.$refs.menu.open(e);
                 this.selectedLayer = id;
-                this.$store.commit("selectLayer", id);
             },
             openSettingsWindow() {
                 let layer = this.layersStore.layers[this.selectedLayer];
+                this.$store.commit("selectLayer", this.selectedLayer);
 
                 if(layer.type == "GRD") {
                     this.$modal.show('grd-props-modal');

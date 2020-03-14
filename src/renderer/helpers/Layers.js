@@ -25,14 +25,38 @@ export class Layer {
     }
 }
 
-export class DEM extends Layer {
-    Nx; Ny; Zmin; Zmax; Xmin; Xmax; Ymin; Ymax; data = [];
+export class GRDAnimation extends Layer {
+    frames = [];
 
-    constructor(title, filename, type, levels, clipping, hiding, palette) {
-        super(title, filename, type);
+    constructor(title, filename, levels, clipping, palette) {
+        super(title, filename, "GRD-Animation");
         this.levels = levels;
         this.clipping = clipping;
-        this.hiding = hiding;
+        this.palette = palette;
+    }
+
+    read() {
+        for(let file of this.filename.split(';')) {
+            let frame = new GRD(file, file, this.levels, this.clipping, this.palette);
+
+            frame.read().then(()=>{
+                this.frames.push(frame);
+            })
+        }
+    }
+
+    draw() {
+        
+    }
+}
+
+export class GRD extends Layer {
+    Nx; Ny; Zmin; Zmax; Xmin; Xmax; Ymin; Ymax; data = [];
+
+    constructor(title, filename, levels, clipping, palette) {
+        super(title, filename, "GRD");
+        this.levels = levels;
+        this.clipping = clipping;
         this.palette = palette
     }
 
@@ -95,14 +119,11 @@ export class DEM extends Layer {
 
         //hiding
 
-        let newPercent = (newZmax - newZmin)/100,
-            hiding = [this.hiding[0] == 0 ? newZmin : newZmin + this.hiding[0]*newPercent,
-                      this.hiding[1] == 100 ? newZmax : newZmin + this.hiding[1]*newPercent];
         for(let y = 0; y < this.Ny; y++) {
             for(let x = 0; x < this.Nx; x++) {
                 //hide
                 let cur = tData[y][x];
-                if(cur >= hiding[0] && cur <= hiding[1]) {
+                if(cur >= this.hiding[0] && cur <= this.hiding[1]) {
                     for (let level = 0; level < this.levels; level++) {
                         if (cur <= zLevels[level]) {
                             data[4*count] = grad[level].color[0];
@@ -167,10 +188,12 @@ export class DEM extends Layer {
                             count++;
                         }
 
-                        this.data.push(row);
+                        this.data[y] = row;
                     }
 
                     fs.close(f)
+
+                    this.hiding = [this.Zmin, this.Zmax];
 
                     arrayBuffer = doubleBuffer = shortBuffer = null;
                     resolve(true);

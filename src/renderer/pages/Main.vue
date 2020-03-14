@@ -3,7 +3,7 @@
     <viewer></viewer>
     <layers-list-panel></layers-list-panel>
     <grd-modal></grd-modal>
-    <grd-props-modal v-if="this.$store.state.Layers.selectedLayer"></grd-props-modal>
+    <grd-props-modal></grd-props-modal>
   </main>
 </template>
 
