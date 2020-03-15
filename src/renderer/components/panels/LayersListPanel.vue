@@ -62,7 +62,7 @@
                 let layer = this.layersStore.layers[this.selectedLayer];
                 this.$store.commit("selectLayer", this.selectedLayer);
 
-                if(layer.type == "GRD") {
+                if(layer.type == "GRD" || layer.type == "GRD-Animation") {
                     this.$modal.show('grd-props-modal');
                 }
             }

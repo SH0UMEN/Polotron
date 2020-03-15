@@ -18,6 +18,7 @@ class LayersStore {
     }
 
     deleteLayer(layerID) {
+        console.log(this.layers[layerID]);
         this.layers[layerID] = null;
     }
 }

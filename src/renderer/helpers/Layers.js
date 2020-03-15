@@ -42,18 +42,18 @@ export class Layer {
 }
 
 export class GRDAnimation extends Layer {
-    drawing; frames = [];
+    drawing; frames = []; hidingFrames = [0, 0];
 
     set hiding(val) {
-        this.hiding = val;
-
         for(let frame of this.frames) {
             frame.hiding = val
         }
+
+        this.hidingFrames = val;
     }
 
     get hiding() {
-        return this.hiding
+        return this.hidingFrames;
     }
 
     constructor(title, filename, levels, clipping, palette) {
@@ -87,8 +87,10 @@ export class GRDAnimation extends Layer {
                 i = 0;
 
             this.drawing = setInterval(()=>{
-                this.frames[i].draw();
-                (i == g - 1) ? i = 0 : i++;
+                if(!this.hidden) {
+                    this.frames[i].draw();
+                    (i == g - 1) ? i = 0 : i++;
+                }
             }, 400)
 
             this.isDrawed = true;
@@ -179,11 +181,13 @@ export class GRD extends Layer {
 
         //hiding
 
+        let hiding = [this.hiding[0], this.hiding[1] == 0 ? this.Zmax : this.hiding[1]]
+
         for(let y = 0; y < this.Ny; y++) {
             for(let x = 0; x < this.Nx; x++) {
                 //hide
                 let cur = tData[y][x];
-                if(cur >= this.hiding[0] && cur <= this.hiding[1]) {
+                if(cur >= hiding[0] && cur <= hiding[1]) {
                     for (let level = 0; level < this.levels; level++) {
                         if (cur <= zLevels[level]) {
                             data[4*count] = grad[level].color[0];
