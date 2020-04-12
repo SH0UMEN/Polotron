@@ -2,13 +2,14 @@ let g2 = require('gradient2'),
     fs = require('fs'),
     path = require('path');
 
+import AnimatedLine from "./AnimatedVectors"
+
 export class Layer {
     isDrawed = false;
     hidden = false;
 
-    constructor(title, filename, type) {
+    constructor(title, type) {
         this.title = title;
-        this.filename = filename;
         this.type = type;
     }
 
@@ -41,6 +42,117 @@ export class Layer {
     }
 }
 
+export class GRDVectorLayers extends Layer {
+    vectors = []; Nx; Ny;
+    drawing = false;
+    lines = [];
+    hMatrix; xMatrix; yMatrix; palette;
+
+    constructor(title, h, x, y, palette) {
+        super(title, "GRD-Animation");
+        this.hMatrix = h;
+        this.xMatrix = x;
+        this.yMatrix = y;
+        this.palette = palette;
+    }
+
+    bindCanvas(canvas) {
+        super.bindCanvas(canvas);
+
+        this.canvas.width = this.Nx;
+        this.canvas.height = this.Ny;
+        this.ctx = canvas.getContext('2d')
+    }
+
+    loop() {
+        setInterval(()=>{
+            if(this.drawing) {
+                this.ctx.clearRect(0,0, this.Nx, this.Ny);
+
+                for (let line of this.lines) {
+                    line.draw(this.ctx)
+                }
+            }
+        }, 30)
+    }
+
+    draw() {
+        for(let vector of this.vectors) {
+            this.lines.push(new AnimatedLine([vector[0], vector[1], vector[0]+vector[2], vector[1]+vector[3]], ''))
+        }
+
+        this.drawing = true;
+        this.loop();
+        this.isDrawed = true;
+    }
+
+    read() {
+        return new Promise((resolve, reject) => {
+            fs.open(this.hMatrix, 'r', (err, h) => {
+                if(err) {
+                    reject(err);
+                } else {
+                    fs.open(this.xMatrix, 'r', (err, x) => {
+                        if(err) {
+                            reject(err)
+                        } else {
+                            fs.open(this.yMatrix, 'r', (err, y) => {
+                                if(err) {
+                                    reject(err)
+                                } else {
+                                    let shortBuffer = Buffer.alloc(2);
+                                    fs.readSync(h, shortBuffer, 0, 2, 4);
+                                    this.Nx = shortBuffer.readUInt16LE(0);
+                                    fs.readSync(h, shortBuffer, 0, 2, 6);
+                                    this.Ny = shortBuffer.readUInt16LE(0);
+
+                                    let count = 0,
+                                        hBuffer = Buffer.alloc(4*this.Ny*this.Nx),
+                                        xBuffer = Buffer.alloc(4*this.Ny*this.Nx),
+                                        yBuffer = Buffer.alloc(4*this.Ny*this.Nx);
+
+                                    fs.readSync(h, hBuffer, 0, 4*this.Ny*this.Nx, 56);
+                                    fs.readSync(x, xBuffer, 0, 4*this.Ny*this.Nx, 56);
+                                    fs.readSync(y, yBuffer, 0, 4*this.Ny*this.Nx, 56);
+
+                                    for(let y = this.Ny-1; y > -1; y--) {
+                                        if(y % 10 == 0) {
+                                            for(let x = 0; x < this.Nx; x++) {
+                                                if(x % 10 == 0) {
+                                                    let h = hBuffer.readFloatLE(4*count);
+
+                                                    if(h != 0) {
+                                                        let Vx = xBuffer.readFloatLE(4*count),
+                                                            Vy = yBuffer.readFloatLE(4*count);
+
+                                                        this.vectors.push([x, y, Vx, Vy]);
+                                                    }
+                                                }
+                                                count++;
+                                            }
+                                        } else {
+                                            count+=this.Nx;
+                                        }
+                                    }
+
+
+                                    fs.close(h);
+                                    fs.close(x);
+                                    fs.close(y);
+
+                                    hBuffer = xBuffer = yBuffer = shortBuffer = null;
+
+                                    resolve();
+                                }
+                            })
+                        }
+                    });
+                }
+            });
+        });
+    }
+}
+
 export class GRDAnimation extends Layer {
     drawing; frames = []; hidingFrames = [0, 0];
 
@@ -57,7 +169,8 @@ export class GRDAnimation extends Layer {
     }
 
     constructor(title, filename, levels, clipping, palette) {
-        super(title, filename, "GRD-Animation");
+        super(title, "GRD-Animation");
+        this.filename;
         this.levels = levels;
         this.clipping = clipping;
         this.palette = palette;
@@ -113,7 +226,8 @@ export class GRD extends Layer {
     Nx; Ny; Zmin; Zmax; Xmin; Xmax; Ymin; Ymax; data = [];
 
     constructor(title, filename, levels, clipping, palette) {
-        super(title, filename, "GRD");
+        super(title, "GRD");
+        this.filename = filename;
         this.levels = levels;
         this.clipping = clipping;
         this.palette = palette

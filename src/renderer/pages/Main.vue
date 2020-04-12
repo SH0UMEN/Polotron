@@ -5,6 +5,7 @@
     <grd-modal></grd-modal>
     <grd-props-modal></grd-props-modal>
     <grd-animation-modal></grd-animation-modal>
+    <vector-modal></vector-modal>
   </main>
 </template>
 
@@ -14,6 +15,7 @@
 
   import LayersListPanel from "../components/panels/LayersListPanel"
   import GrdModal from "../components/modals/GrdModal"
+  import VectorModal from "../components/modals/VectorModal"
   import GrdPropsModal from "../components/modals/GrdPropsModal"
   import GrdAnimationModal from "../components/modals/GrdAnimationModal"
   import Viewer from "../components/Viewer"
@@ -30,14 +32,18 @@
       GrdPropsModal,
       Viewer,
       LayersListPanel,
-      GrdAnimationModal
+      GrdAnimationModal,
+      VectorModal
     },
     mounted() {
       electron.ipcRenderer.on('openGRD', (event) => {
         this.$modal.show('grd-modal')
-      }),
+      });
       electron.ipcRenderer.on('openGRDAnimation', (event) => {
         this.$modal.show('grd-animation-modal')
+      });
+      electron.ipcRenderer.on('openVectors', (event) => {
+        this.$modal.show('vector-modal')
       })
     },
   }

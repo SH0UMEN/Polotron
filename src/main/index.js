@@ -50,6 +50,12 @@ app.on('ready', () => {
               click: () => {
                 mainWindow.webContents.send('openGRDAnimation')
               }
+            },
+            {
+              label: 'Построение векторов',
+              click: () => {
+                mainWindow.webContents.send('openVectors')
+              }
             }
           ]
         }
