@@ -15,5 +15,4 @@
 </script>
 
 <style>
-    /* CSS */
 </style>

@@ -46,6 +46,7 @@ export class GRDVectorLayers extends Layer {
     vectors = []; Nx; Ny;
     drawing = false;
     lines = [];
+    animationFrameId;
     hMatrix; xMatrix; yMatrix; palette;
 
     constructor(title, h, x, y, palette) {
@@ -54,6 +55,11 @@ export class GRDVectorLayers extends Layer {
         this.xMatrix = x;
         this.yMatrix = y;
         this.palette = palette;
+    }
+
+    destroy() {
+        super.destroy();
+        cancelAnimationFrame(this.animationFrameId)
     }
 
     bindCanvas(canvas) {
@@ -65,20 +71,27 @@ export class GRDVectorLayers extends Layer {
     }
 
     loop() {
-        setInterval(()=>{
-            if(this.drawing) {
-                this.ctx.clearRect(0,0, this.Nx, this.Ny);
+        let object = this;
 
-                for (let line of this.lines) {
-                    line.draw(this.ctx)
+        function circle() {
+            if(object.drawing && !object.hidden) {
+                object.ctx.clearRect(0,0, object.Nx, object.Ny);
+
+                for (let line of object.lines) {
+                    line.draw(object.ctx)
                 }
             }
-        }, 30)
+
+            requestAnimationFrame(circle)
+        }
+
+        this.animationFrameId = requestAnimationFrame(circle);
     }
 
     draw() {
         for(let vector of this.vectors) {
-            this.lines.push(new AnimatedLine([vector[0], vector[1], vector[0]+vector[2], vector[1]+vector[3]], ''))
+            this.lines.push(new AnimatedLine([vector[0], vector[1],
+                            vector[0]+vector[2]*30, vector[1]-vector[3]*30], ''))
         }
 
         this.drawing = true;
@@ -116,9 +129,9 @@ export class GRDVectorLayers extends Layer {
                                     fs.readSync(y, yBuffer, 0, 4*this.Ny*this.Nx, 56);
 
                                     for(let y = this.Ny-1; y > -1; y--) {
-                                        if(y % 10 == 0) {
+                                        if(y % 8 == 0) {
                                             for(let x = 0; x < this.Nx; x++) {
-                                                if(x % 10 == 0) {
+                                                if(x % 8 == 0) {
                                                     let h = hBuffer.readFloatLE(4*count);
 
                                                     if(h != 0) {
@@ -170,7 +183,7 @@ export class GRDAnimation extends Layer {
 
     constructor(title, filename, levels, clipping, palette) {
         super(title, "GRD-Animation");
-        this.filename;
+        this.filename = filename;
         this.levels = levels;
         this.clipping = clipping;
         this.palette = palette;
@@ -184,12 +197,14 @@ export class GRDAnimation extends Layer {
 
     read() {
         return new Promise((resolve, reject) => {
+            console.log("a");
             for(let file of this.filename) {
                 let frame = new GRD(file, file, this.levels, this.clipping, this.palette);
 
                 frame.readSync();
                 this.frames.push(frame);
             }
+            console.log("b");
             resolve();
         })
     }
