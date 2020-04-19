@@ -91,7 +91,7 @@ export class GRDVectorLayers extends Layer {
     draw() {
         for(let vector of this.vectors) {
             this.lines.push(new AnimatedLine([vector[0], vector[1],
-                            vector[0]+vector[2]*30, vector[1]-vector[3]*30], ''))
+                            vector[0]+vector[2]*50, vector[1]-vector[3]*50], ''))
         }
 
         this.drawing = true;
@@ -197,14 +197,12 @@ export class GRDAnimation extends Layer {
 
     read() {
         return new Promise((resolve, reject) => {
-            console.log("a");
             for(let file of this.filename) {
                 let frame = new GRD(file, file, this.levels, this.clipping, this.palette);
 
                 frame.readSync();
                 this.frames.push(frame);
             }
-            console.log("b");
             resolve();
         })
     }

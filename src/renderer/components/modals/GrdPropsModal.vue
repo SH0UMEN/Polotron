@@ -28,15 +28,15 @@
 
             <div class="modal__form-field">
                 <span class="modal__form-field-title">Показывать с/по: </span>
-                <div class="inputs">
-                    <main-input type="number" v-model.number="hidingMin"></main-input>
-                    <main-input type="number" v-model.number="hidingMax"></main-input>
-                </div>
+            <div class="inputs">
+                <main-input type="number" v-model.number="hidingMin"></main-input>
+                <main-input type="number" v-model.number="hidingMax"></main-input>
             </div>
+        </div>
         </form>
 
         <div class="modal__bottom">
-            <main-button :disabled="inProcess" :filled="true" @click="redraw">
+            <main-button :disabled="!valid" :filled="true" @click="redraw">
                 Построить
             </main-button>
         </div>
@@ -62,6 +62,15 @@
             MainButton,
             Slider,
             PaletteInput
+        },
+        computed: {
+            valid() {
+                return this.fileNames.length > 0 &&
+                    this.colors.length > 1 &&
+                    this.levels > 5 &&
+                    this.hidingMin >= 0 &&
+                    this.layerName.length > 0;
+            }
         },
         data() {
             return {

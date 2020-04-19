@@ -24,7 +24,7 @@
         </form>
 
         <div class="modal__bottom">
-            <main-button :disabled="inProcess" :filled="true" @click="read">
+            <main-button :disabled="!valid" :filled="true" @click="read">
                 Построить
             </main-button>
         </div>
@@ -61,6 +61,13 @@
                 layerName: "",
                 colors: ['#00ff00', '#ff0000'],
                 inProcess: false
+            }
+        },
+        computed: {
+            valid() {
+                return this.hFileNames.length == 1 &&
+                    this.xFileNames.length == 1 &&
+                    this.yFileNames.length == 1 && this.layerName.length > 0;
             }
         },
         methods: {

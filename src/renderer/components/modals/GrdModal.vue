@@ -27,7 +27,7 @@
         </form>
 
         <div class="modal__bottom">
-            <main-button :disabled="inProcess" :filled="true" @click="readMatrix">
+            <main-button :disabled="!valid" :filled="true" @click="readMatrix">
                 Построить
             </main-button>
         </div>
@@ -44,6 +44,7 @@
     import {GRD} from "../../helpers/Layers"
     import LayersStore from "../../helpers/LayersStore"
     import PaletteInput from "../ui/PaletteInput"
+    import { required } from 'vuelidate/lib/validators'
     const path = require('path');
 
     export default {
@@ -64,6 +65,18 @@
                 clippingInterval: [0, 100],
                 colors: ['#00ff00', '#ff0000'],
                 inProcess: false
+            }
+        },
+        validations: {
+            layerName: {
+                required: required
+            }
+        },
+        computed: {
+            valid() {
+                return this.fileNames.length > 0 &&
+                       this.colors.length > 1 &&
+                       this.levels > 5 && this.layerName.length > 0;
             }
         },
         methods: {
