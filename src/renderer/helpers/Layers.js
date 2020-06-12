@@ -2,7 +2,7 @@ let g2 = require('gradient2'),
     fs = require('fs'),
     path = require('path');
 
-import AnimatedLine from "./AnimatedVectors"
+import AnimatedLine from "./AnimatedVector"
 
 export class Layer {
     isDrawed = false;
@@ -42,7 +42,7 @@ export class Layer {
     }
 }
 
-export class GRDVectorLayers extends Layer {
+export class GRDVectorLayer extends Layer {
     vectors = []; Nx; Ny;
     drawing = false;
     lines = [];
@@ -217,7 +217,7 @@ export class GRDAnimation extends Layer {
                     this.frames[i].draw();
                     (i == g - 1) ? i = 0 : i++;
                 }
-            }, 400)
+            }, 400);
 
             this.isDrawed = true;
         }

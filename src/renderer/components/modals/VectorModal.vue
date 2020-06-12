@@ -38,7 +38,7 @@
     import MainButton from "../ui/Button"
     import Slider from '../ui/Slider'
     import 'vue-slider-component/theme/antd.css'
-    import { GRDVectorLayers } from "../../helpers/Layers"
+    import { GRDVectorLayer } from "../../helpers/Layers"
     import LayersStore from "../../helpers/LayersStore"
     import PaletteInput from "../ui/PaletteInput"
     const path = require('path');
@@ -78,7 +78,7 @@
                 if(!this.inProcess) {
                     this.inProcess = true;
                     let store = LayersStore.getInstance(),
-                        layer = new GRDVectorLayers(this.layerName, this.hFileNames[0], this.xFileNames[0],
+                        layer = new GRDVectorLayer(this.layerName, this.hFileNames[0], this.xFileNames[0],
                                                     this.yFileNames[0], this.colors),
                         id = store.addLayer(layer);
 

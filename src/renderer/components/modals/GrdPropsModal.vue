@@ -65,8 +65,7 @@
         },
         computed: {
             valid() {
-                return this.fileNames.length > 0 &&
-                    this.colors.length > 1 &&
+                return this.colors.length > 1 &&
                     this.levels > 5 &&
                     this.hidingMin >= 0 &&
                     this.layerName.length > 0;
@@ -87,12 +86,9 @@
             }
         },
         watch: {
-            // layerID(val) {
-            //     console.log(val);
-            //     let layer = this.layers[val];
-            //     this.layerName = layer.title;
-            //     this.lavels = layer.levels;
-            // }
+            layerID(val) {
+                this.setLayer();
+            }
         },
         methods: {
             setLayer() {
