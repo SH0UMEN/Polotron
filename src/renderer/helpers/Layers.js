@@ -40,6 +40,10 @@ export class Layer {
     readSync() {
 
     }
+
+    adaptCanvas() {
+
+    }
 }
 
 export class GRDVectorLayer extends Layer {
@@ -261,8 +265,8 @@ export class GRD extends Layer {
 
         grad = grad.toArray('rgb');
 
-        this.canvas.width = this.Nx;
-        this.canvas.height = this.Ny;
+        // this.canvas.width = this.Nx;
+        // this.canvas.height = this.Ny;
 
         //Find new min and max
         let newZmin = this.Zmax, newZmax = this.Zmin;

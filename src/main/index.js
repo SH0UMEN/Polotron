@@ -58,6 +58,17 @@ app.on('ready', () => {
               }
             }
           ]
+        },
+        {
+          label: 'Действия',
+          submenu: [
+            {
+              label: 'Добавить площадной объект',
+              click: () => {
+                mainWindow.webContents.send('addAreaObject')
+              }
+            }
+          ]
         }
       ];
 

@@ -6,10 +6,12 @@
     <grd-props-modal></grd-props-modal>
     <grd-animation-modal></grd-animation-modal>
     <vector-modal></vector-modal>
+    <area-object-modal></area-object-modal>
   </main>
 </template>
 
 <script>
+  import AreaObjectModal from "../components/modals/AreaObjectModal";
   const electron = require('electron'),
         path = require('path');
 
@@ -28,6 +30,7 @@
       }
     },
     components: {
+      AreaObjectModal,
       GrdModal,
       GrdPropsModal,
       Viewer,
@@ -44,7 +47,10 @@
       });
       electron.ipcRenderer.on('openVectors', (event) => {
         this.$modal.show('vector-modal')
-      })
+      });
+      electron.ipcRenderer.on('addAreaObject', (event) => {
+        this.$modal.show('area-object-modal')
+      });
     },
   }
 </script>
