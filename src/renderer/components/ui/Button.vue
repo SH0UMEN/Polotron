@@ -2,7 +2,7 @@
     <button class="main-button" type="button"
             :disabled="disabled"
             :class="{ 'main-button_bordered': bordered, 'main-button_filled': filled }"
-            @click.prevents="$emit('click')">
+            @click.prevents="$emit('click', $event)">
         <slot></slot>
     </button>
 </template>

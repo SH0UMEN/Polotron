@@ -41,8 +41,8 @@ export class Layer {
 
     }
 
-    adaptCanvas() {
-
+    redraw() {
+        this.draw();
     }
 }
 
@@ -95,7 +95,7 @@ export class GRDVectorLayer extends Layer {
     draw() {
         for(let vector of this.vectors) {
             this.lines.push(new AnimatedLine([vector[0], vector[1],
-                            vector[0]+vector[2]*50, vector[1]-vector[3]*50], ''))
+                vector[0]+vector[2]*50, vector[1]-vector[3]*50], ''))
         }
 
         this.drawing = true;
@@ -260,13 +260,13 @@ export class GRD extends Layer {
         let tData = this.data.map(y=>y.map(x=>x)),
             percent = (this.Zmax - this.Zmin)/100,
             clipping = [this.clipping[0] == 0 ? this.Zmin : this.Zmin + this.clipping[0]*percent,
-                        this.clipping[1] == 100 ? this.Zmax : this.Zmin + this.clipping[1]*percent];
+                this.clipping[1] == 100 ? this.Zmax : this.Zmin + this.clipping[1]*percent];
 
 
         grad = grad.toArray('rgb');
 
-        // this.canvas.width = this.Nx;
-        // this.canvas.height = this.Ny;
+        this.canvas.width = this.Nx;
+        this.canvas.height = this.Ny;
 
         //Find new min and max
         let newZmin = this.Zmax, newZmax = this.Zmin;

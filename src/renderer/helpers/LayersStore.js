@@ -21,6 +21,10 @@ class LayersStore {
         this.layers[layerID].drawing = false;
         this.layers[layerID] = null;
     }
+
+    getLayerByID(layerID) {
+        return this.layers[layerID];
+    }
 }
 
 export default LayersStore;
