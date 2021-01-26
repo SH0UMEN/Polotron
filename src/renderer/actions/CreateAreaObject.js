@@ -52,7 +52,6 @@ export default class CreateAreaObject extends Action {
         this.bresenham(this.points[len-1][0], this.points[len-1][1], this.points[0][0], this.points[0][1], this.z);
         let centerPoint = this.calculateCenter();
         this.fill(centerPoint[0], centerPoint[1], this.z);
-
         this.layer.redraw();
     }
 
@@ -78,8 +77,6 @@ export default class CreateAreaObject extends Action {
 
         while(curPixel != z) {
             data[y][x] = z;
-            // this.layer.redraw();
-            // debugger;
 
             if(!blockUp && data[y+1][x] != z) {
                 this.fill(x, y+1, z, false, true);

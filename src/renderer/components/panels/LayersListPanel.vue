@@ -1,7 +1,11 @@
 <template>
     <div class="layers-list-panel">
         <draggable class="layers-list-panel__container" v-model="layersID" @change="orderChanged" @start="drag=true" @end="drag=false">
-            <div class="layers-list-panel__layer" v-for="id in layersID" @contextmenu.prevent="openMenu($event, id)">
+            <div class="layers-list-panel__layer"
+                 v-for="id in layersID"
+                 @click="selectedLayer = id"
+                 :class="{ 'layers-list-panel__layer_selected': id == selectedLayer }"
+                 @contextmenu.prevent="openMenu($event, id)">
                 <i class="fas fa-ellipsis-v layers-list-panel__drag"></i>
                 <span class="layers-list-panel__layer-title">{{ layersStore.layers[id].title }} ({{ id }})</span>
                 <label class="layers-list-panel__vis-changer">
@@ -31,6 +35,11 @@
     import VueContext from 'vue-context'
 
     export default {
+    	props: {
+    	    value: {
+    	    	type: Number,
+	        }
+	    },
         name: "LayersListPanel",
         components: {
             Draggable,
@@ -44,6 +53,21 @@
                 selectedLayer: 0
             }
         },
+	    watch: {
+    	    selectedLayer(val) {
+    	    	this.tValue = val;
+	        }
+	    },
+	    computed: {
+			tValue: {
+				get() {
+					return this.value;
+				},
+				set(val) {
+					this.$emit('input', val);
+				}
+			}
+	    },
         methods: {
             orderChanged() {
                 this.$store.commit('setLayers', this.layersID)

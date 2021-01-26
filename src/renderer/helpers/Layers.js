@@ -345,12 +345,16 @@ export class GRD extends Layer {
 
     readSync(callback) {
         let shortBuffer  = Buffer.alloc(2),
+            stringBuffer = Buffer.alloc(4),
             doubleBuffer = Buffer.alloc(8);
 
         fs.open(this.filename, 'r', (err, f) => {
             if(err) {
                 reject(err);
             } else {
+                fs.readSync(f, stringBuffer, 0, 4, 0);
+                this.str = stringBuffer.toString();
+                console.log(this.str);
                 fs.readSync(f, shortBuffer, 0, 2, 4);
                 this.Nx = shortBuffer.readUInt16LE(0);
                 fs.readSync(f, shortBuffer, 0, 2, 6);
@@ -389,7 +393,7 @@ export class GRD extends Layer {
 
                 this.hiding = [this.Zmin, this.Zmax];
 
-                arrayBuffer = doubleBuffer = shortBuffer = null;
+                arrayBuffer = doubleBuffer = stringBuffer = shortBuffer = null;
 
                 callback ? callback() : ""
             }
@@ -402,5 +406,35 @@ export class GRD extends Layer {
                 resolve(true);
             });
         })
+    }
+
+    saveAsGRD(filename) {
+        return new Promise((resolve, reject) => {
+            let buffer = Buffer.alloc((4*this.Ny*this.Nx)+56);
+            buffer.write(this.str, 0, 4);
+            buffer.writeUInt16LE(this.Nx, 4);
+            buffer.writeUInt16LE(this.Ny, 6);
+
+            buffer.writeDoubleLE(this.Xmin, 8);
+            buffer.writeDoubleLE(this.Xmax, 16);
+            buffer.writeDoubleLE(this.Ymin, 24);
+            buffer.writeDoubleLE(this.Ymax, 32);
+            buffer.writeDoubleLE(this.Zmin, 40);
+            buffer.writeDoubleLE(this.Zmax, 48);
+
+            let count = 0;
+
+            for(let y = this.Ny-1; y > -1; y--) {
+                for(let x = 0; x < this.Nx; x++) {
+                    buffer.writeFloatLE(this.data[y][x], 48 + (4*count));
+                    count++;
+                }
+            }
+
+            fs.writeFile(filename, buffer, () => {
+                buffer = null;
+                resolve(true);
+            });
+        });
     }
 }

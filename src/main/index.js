@@ -56,6 +56,12 @@ app.on('ready', () => {
               click: () => {
                 mainWindow.webContents.send('openVectors')
               }
+            },
+            {
+              label: 'Экспорт в .grd',
+              click: () => {
+                mainWindow.webContents.send('exportAsGRD')
+              }
             }
           ]
         },
