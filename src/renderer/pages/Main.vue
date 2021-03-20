@@ -73,7 +73,7 @@ export default {
 </script>
 
 <style lang="sass">
-@import "../assets/fonts/roboto/roboto.css"
+//@import "../assets/fonts/roboto/roboto.css"
 @import "../assets/css/all.css"
 @import "../assets/sass/main"
 </style>
