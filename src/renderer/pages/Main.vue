@@ -3,6 +3,8 @@
 		<div tabindex="-1"
 			 @keydown.90.ctrl.exact="undo"
 			 @keydown.89.ctrl.exact="redo"
+			 @keydown.90.meta.exact="undo"
+			 @keydown.89.meta.exact="redo"
 			 class="main-wrapper">
 			<viewer></viewer>
 			<layers-list-panel v-model="selectedLayer"></layers-list-panel>
