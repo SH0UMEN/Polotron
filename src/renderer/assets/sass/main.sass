@@ -1,7 +1,7 @@
 @import "vue-select/src/scss/vue-select.scss"
 @import "vars"
 
-body, html, #app, main
+body, html, #app, main, .main-wrapper
     margin: 0
     height: 100%
 
@@ -16,7 +16,8 @@ body
     box-sizing: border-box
 
 main
-    display: flex
+    .main-wrapper
+        display: flex
 
     .layers-list-panel
         min-width: 200px

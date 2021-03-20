@@ -26,6 +26,7 @@ import MainButton from "../ui/Button";
 import MainSelect from "../ui/MainSelect";
 import LayersStore from "../../helpers/LayersStore"
 import CreateAreaObject from "../../actions/CreateAreaObject"
+import ChangeManager from '../../ChangeManager';
 import {GRD} from '../../helpers/Layers';
 
 export default {
@@ -46,7 +47,8 @@ export default {
 			let layer = this.layersStore.getLayerByID(this.selectedLayer.id);
 			let action = new CreateAreaObject(layer.canvas, layer, this.newZ);
 			this.$modal.hide('area-object-modal');
-			action.activate();
+			this.selectedLayer = null;
+			action.execute();
 		}
 	},
 

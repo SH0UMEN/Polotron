@@ -1,4 +1,17 @@
+import ChangeManager from "../ChangeManager";
+
 export default class Action {
-    constructor() {
+    isChange = false;
+
+    execute() {
+        ChangeManager.getInstance().execute(this);
     }
+
+    undo() {}
+
+    redo() {}
+
+    activate() {}
+
+    deactivate() {}
 }

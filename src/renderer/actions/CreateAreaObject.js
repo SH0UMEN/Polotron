@@ -11,8 +11,12 @@ export default class CreateAreaObject extends Action {
     active = false;
     prevCursor = null;
     points = [];
+    squarePoints = [];
     counter = 0;
     z = 0;
+    isChange = true;
+
+    origin = null;
 
     constructor(canvas, layer, z) {
         super();
@@ -43,7 +47,13 @@ export default class CreateAreaObject extends Action {
         this.deactivate();
         event.stopPropagation();
         event.preventDefault();
+
         let len = this.points.length;
+
+        if(len < 3)
+            return
+
+        this.rememberSquareValues();
 
         for(let i = 0; i < len-1; i++) {
             this.bresenham(this.points[i][0], this.points[i][1], this.points[i+1][0], this.points[i+1][1], this.z);
@@ -94,12 +104,9 @@ export default class CreateAreaObject extends Action {
         y = yOrigin;
         curPixel = data[y][x];
 
-        //debugger;
 
         while(curPixel != z) {
             data[y][x] = z;
-            // this.layer.redraw();
-            // debugger;
 
             if(!blockUp && data[y+1][x] != z) {
                 this.fill(x, y+1, z, false, true);
@@ -139,6 +146,36 @@ export default class CreateAreaObject extends Action {
         }
     }
 
+    rememberSquareValues() {
+        this.minLeft = this.layer.data[0].length-1;
+        this.maxLeft = 0;
+        this.minTop = this.layer.data.length-1;
+        this.maxTop = 0;
+
+        for(var point of this.points) {
+            this.minLeft = Math.min(point[0], this.minLeft);
+            this.maxLeft = Math.max(point[0], this.maxLeft);
+            this.minTop = Math.min(point[1], this.minTop);
+            this.maxTop = Math.max(point[1], this.maxTop);
+        }
+
+        this.origin = this.getSquare();
+    }
+
+    getSquare() {
+        let res = [];
+
+        for(var i = this.minTop; i <= this.maxTop; i++)
+            res.push(this.layer.data[i].slice(this.minLeft, this.maxLeft+1));
+
+        return res;
+    }
+
+    swapSquare(square) {
+        for(var i = this.minTop; i <= this.maxTop; i++)
+            this.layer.data[i].splice(this.minLeft, this.maxLeft - this.minLeft + 1, ...square[i-this.minTop]);
+    }
+
     setPoint(event) {
         if(event.target == this.canvas) {
             this.points.push([event.offsetX, event.offsetY]);
@@ -157,6 +194,7 @@ export default class CreateAreaObject extends Action {
             body.style.cursor = this.prevCursor;
             window.removeEventListener('keypress', this.boundOnKeyPress);
             window.removeEventListener('click', this.boundSetPoint);
+            window.removeEventListener('dblclick', this.boundCreateArea);
         }
     }
 
@@ -166,5 +204,23 @@ export default class CreateAreaObject extends Action {
 
     onKeyPress(event) {
         let isZ = event.code == Keys.Z;
+
+        console.log('1');
+    }
+
+    undoRedo() {
+        var origin = this.getSquare();
+        this.swapSquare(this.origin);
+        this.origin = origin;
+        this.layer.redraw();
+        this.layer.redraw();
+    }
+
+    undo() {
+        this.undoRedo();
+    }
+
+    redo() {
+        this.undoRedo();
     }
 }

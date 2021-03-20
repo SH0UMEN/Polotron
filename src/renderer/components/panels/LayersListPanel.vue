@@ -20,6 +20,9 @@
                 <li>
                     <button @click="openSettingsWindow">Настройки</button>
                 </li>
+                <li v-if="layersStore.layers[selectedLayer] instanceof GRD">
+					<button @click="exportGRD">Экспорт</button>
+				</li>
                 <li>
                     <button @click="deleteLayer">Удалить слой</button>
                 </li>
@@ -33,8 +36,12 @@
     import LayersStore from '../../helpers/LayersStore'
     import ContextMenu from '../ui/ContextMenu'
     import VueContext from 'vue-context'
+	import { GRD } from '../../helpers/Layers'
 
-    export default {
+	const electron = require('electron'),
+		  path = require('path');
+
+	export default {
     	props: {
     	    value: {
     	    	type: Number,
@@ -50,7 +57,8 @@
             return {
                 layersStore: LayersStore.getInstance(),
                 layersID: this.$store.state.Layers.layers,
-                selectedLayer: 0
+                selectedLayer: 0,
+				GRD: GRD
             }
         },
 	    watch: {
@@ -89,7 +97,20 @@
                 if(layer.type == "GRD" || layer.type == "GRD-Animation") {
                     this.$modal.show('grd-props-modal');
                 }
-            }
+            },
+			exportGRD() {
+				electron.remote.dialog.showSaveDialog({
+					filters: [
+						{ name: '.grd-матрицы', extensions: ['grd']}
+					]
+				}, (filename) => {
+					let layer = this.layersStore.layers[this.selectedLayer];
+
+					if(filename && layer) {
+						layer.saveAsGRD(filename);
+					}
+				});
+			}
         }
     }
 </script>
