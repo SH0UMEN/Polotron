@@ -51,7 +51,7 @@
     }
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "gradient2": "^1.0.5",
     "vue": "^2.5.16",
     "vue-context": "^5.0.0",
