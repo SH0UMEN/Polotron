@@ -17,10 +17,10 @@
                 <span class="modal__form-field-title">Название слоя: </span>
                 <main-input class="modal__form-field-input" v-model="layerName"></main-input>
             </div>
-            <div class="modal__form-field">
-                <span class="modal__form-field-title">Цветовая палитра: </span>
-                <palette-input v-model="colors"></palette-input>
-            </div>
+<!--            <div class="modal__form-field">-->
+<!--                <span class="modal__form-field-title">Цветовая палитра: </span>-->
+<!--                <palette-input v-model="colors"></palette-input>-->
+<!--            </div>-->
         </form>
 
         <div class="modal__bottom">
@@ -59,7 +59,7 @@
                 xFileNames: [],
                 yFileNames: [],
                 layerName: "",
-                colors: ['#00ff00', '#ff0000'],
+                //colors: ['#00ff00', '#ff0000'],
                 inProcess: false
             }
         },
@@ -79,14 +79,14 @@
                     this.inProcess = true;
                     let store = LayersStore.getInstance(),
                         layer = new GRDVectorLayer(this.layerName, this.hFileNames[0], this.xFileNames[0],
-                                                    this.yFileNames[0], this.colors),
+                                                    this.yFileNames[0]),
                         id = store.addLayer(layer);
 
                     this.$store.commit('addLayer', id);
                     this.$modal.hide('vector-modal');
                     this.fileNames = [];
                     this.layerName = "";
-                    this.colors = ['#00ff00', '#ff0000'];
+                    //this.colors = ['#00ff00', '#ff0000'];
                     this.inProcess = false;
                 }
             }

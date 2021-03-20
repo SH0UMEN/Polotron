@@ -51,14 +51,13 @@ export class GRDVectorLayer extends Layer {
     drawing = false;
     lines = [];
     animationFrameId;
-    hMatrix; xMatrix; yMatrix; palette;
+    hMatrix; xMatrix; yMatrix;
 
-    constructor(title, h, x, y, palette) {
+    constructor(title, h, x, y) {
         super(title, "GRD-Animation");
         this.hMatrix = h;
         this.xMatrix = x;
         this.yMatrix = y;
-        this.palette = palette;
     }
 
     destroy() {
