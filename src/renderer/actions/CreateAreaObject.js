@@ -166,9 +166,5 @@ export default class CreateAreaObject extends Action {
 
     onKeyPress(event) {
         let isZ = event.code == Keys.Z;
-
-        if(event.ctrlKey && isZ) {
-            console.log('fuck');
-        }
     }
 }

@@ -184,11 +184,11 @@ export class GRDAnimation extends Layer {
         return this.hidingFrames;
     }
 
-    constructor(title, filename, levels, clipping, palette) {
+    constructor(title, filename, levels, palette, clipping) {
         super(title, "GRD-Animation");
         this.filename = filename;
         this.levels = levels;
-        this.clipping = clipping;
+        this.clipping = clipping || [1, 99];
         this.palette = palette;
     }
 
@@ -241,12 +241,12 @@ export class GRDAnimation extends Layer {
 export class GRD extends Layer {
     Nx; Ny; Zmin; Zmax; Xmin; Xmax; Ymin; Ymax; data = [];
 
-    constructor(title, filename, levels, clipping, palette) {
+    constructor(title, filename, levels, palette, clipping) {
         super(title, "GRD");
         this.filename = filename;
         this.levels = levels;
-        this.clipping = clipping;
-        this.palette = palette
+        this.clipping = clipping || [1, 99];
+        this.palette = palette;
     }
 
     draw() {
@@ -260,7 +260,6 @@ export class GRD extends Layer {
             percent = (this.Zmax - this.Zmin)/100,
             clipping = [this.clipping[0] == 0 ? this.Zmin : this.Zmin + this.clipping[0]*percent,
                 this.clipping[1] == 100 ? this.Zmax : this.Zmin + this.clipping[1]*percent];
-
 
         grad = grad.toArray('rgb');
 
@@ -353,7 +352,6 @@ export class GRD extends Layer {
             } else {
                 fs.readSync(f, stringBuffer, 0, 4, 0);
                 this.str = stringBuffer.toString();
-                console.log(this.str);
                 fs.readSync(f, shortBuffer, 0, 2, 4);
                 this.Nx = shortBuffer.readUInt16LE(0);
                 fs.readSync(f, shortBuffer, 0, 2, 6);
@@ -425,7 +423,7 @@ export class GRD extends Layer {
 
             for(let y = this.Ny-1; y > -1; y--) {
                 for(let x = 0; x < this.Nx; x++) {
-                    buffer.writeFloatLE(this.data[y][x], 48 + (4*count));
+                    buffer.writeFloatLE(this.data[y][x], 56 + (4*count));
                     count++;
                 }
             }

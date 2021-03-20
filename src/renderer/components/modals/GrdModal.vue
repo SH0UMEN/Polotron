@@ -15,10 +15,10 @@
                 <main-input type="number" class="modal__form-field-input" v-model="levels"></main-input>
             </div>
 
-            <div class="modal__form-field">
-                <span class="modal__form-field-title">Обрезать с/по (%): </span>
-                <slider v-model="clippingInterval" class="modal__form-range"></slider>
-            </div>
+<!--            <div class="modal__form-field">-->
+<!--                <span class="modal__form-field-title">Обрезать с/по (%): </span>-->
+<!--                <slider v-model="clippingInterval" class="modal__form-range"></slider>-->
+<!--            </div>-->
 
             <div class="modal__form-field">
                 <span class="modal__form-field-title">Цветовая палитра: </span>
@@ -63,7 +63,7 @@
                 layerName: "",
                 levels: 20,
                 clippingInterval: [0, 100],
-                colors: ['#00ff00', '#ff0000'],
+                colors: ['#38761d', '#ffff00', '#ff0000'],
                 inProcess: false
             }
         },
@@ -87,8 +87,7 @@
                 if(!this.inProcess) {
                     this.inProcess = true;
                     let store = LayersStore.getInstance(),
-                        layer = new GRD(this.layerName, this.fileNames[0], this.levels,
-                            this.clippingInterval, this.colors),
+                        layer = new GRD(this.layerName, this.fileNames[0], this.levels, this.colors),
                         id = store.addLayer(layer);
 
                     this.$store.commit('addLayer', id);
@@ -96,9 +95,9 @@
                     this.fileNames = [];
                     this.layerName = "";
                     this.levels = 20;
-                    this.clippingInterval = [0, 100];
+                    this.clippingInterval = [1, 99];
                     this.hidingInterval = [0, 100];
-                    this.colors = ['#00ff00', '#ff0000'];
+                    this.colors = ['#38761d', '#ffff00', '#ff0000'];
                     this.inProcess = false;
                 }
             }
