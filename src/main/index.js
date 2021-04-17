@@ -73,6 +73,12 @@ app.on('ready', () => {
               click: () => {
                 mainWindow.webContents.send('addAreaObject')
               }
+            },
+            {
+              label: 'Добавить источник',
+              click: () => {
+                mainWindow.webContents.send('addSource')
+              }
             }
           ]
         }

@@ -239,7 +239,7 @@ export class GRDAnimation extends Layer {
 }
 
 export class GRD extends Layer {
-    Nx; Ny; Zmin; Zmax; Xmin; Xmax; Ymin; Ymax; data = [];
+    Nx; Ny; Zmin; Zmax; Xmin; Xmax; Ymin; Ymax; data = []; sources = [];
 
     constructor(title, filename, levels, palette, clipping) {
         super(title, "GRD");
@@ -433,5 +433,20 @@ export class GRD extends Layer {
                 resolve(true);
             });
         });
+    }
+
+    addSource(source) {
+        this.sources.push(source);
+    }
+
+    getSources() {
+        return this.sources;
+    }
+
+    removeSource(source) {
+        var ind = this.sources.indexOf(source);
+
+        if(ind != -1)
+            this.sources.splice(ind, 1);
     }
 }

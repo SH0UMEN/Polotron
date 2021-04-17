@@ -3,8 +3,13 @@ import ChangeManager from "../ChangeManager";
 export default class Action {
     isChange = false;
 
-    execute() {
+    execute(deactivateCallback) {
+        this.deactivateCallback = deactivateCallback;
         ChangeManager.getInstance().execute(this);
+    }
+
+    isActive() {
+        return this.active;
     }
 
     undo() {}
@@ -13,5 +18,8 @@ export default class Action {
 
     activate() {}
 
-    deactivate() {}
+    deactivate() {
+        if(this.deactivateCallback)
+            this.deactivateCallback();
+    }
 }

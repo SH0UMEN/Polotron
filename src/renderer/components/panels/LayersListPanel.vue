@@ -20,6 +20,9 @@
                 <li>
                     <button @click="openSettingsWindow">Настройки</button>
                 </li>
+				<li v-if="layersStore.layers[selectedLayer] instanceof GRD">
+					<button @click="openSources">Список источников</button>
+				</li>
                 <li v-if="layersStore.layers[selectedLayer] instanceof GRD">
 					<button @click="exportGRD">Экспорт</button>
 				</li>
@@ -90,6 +93,9 @@
                 this.$refs.menu.open(e);
                 this.selectedLayer = id;
             },
+			openSources() {
+            	this.$modal.show('source-list-modal')
+			},
             openSettingsWindow() {
                 let layer = this.layersStore.layers[this.selectedLayer];
                 this.$store.commit("selectLayer", this.selectedLayer);

@@ -11,8 +11,6 @@ export default class CreateAreaObject extends Action {
     active = false;
     prevCursor = null;
     points = [];
-    squarePoints = [];
-    counter = 0;
     z = 0;
     isChange = true;
 
@@ -195,6 +193,8 @@ export default class CreateAreaObject extends Action {
             window.removeEventListener('keypress', this.boundOnKeyPress);
             window.removeEventListener('click', this.boundSetPoint);
             window.removeEventListener('dblclick', this.boundCreateArea);
+
+            super.deactivate();
         }
     }
 
@@ -212,7 +212,6 @@ export default class CreateAreaObject extends Action {
         var origin = this.getSquare();
         this.swapSquare(this.origin);
         this.origin = origin;
-        this.layer.redraw();
         this.layer.redraw();
     }
 

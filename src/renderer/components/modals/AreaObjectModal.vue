@@ -26,7 +26,6 @@ import MainButton from "../ui/Button";
 import MainSelect from "../ui/MainSelect";
 import LayersStore from "../../helpers/LayersStore"
 import CreateAreaObject from "../../actions/CreateAreaObject"
-import ChangeManager from '../../ChangeManager';
 import {GRD} from '../../helpers/Layers';
 
 export default {

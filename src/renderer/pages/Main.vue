@@ -14,6 +14,9 @@
 		<grd-animation-modal></grd-animation-modal>
 		<vector-modal></vector-modal>
 		<area-object-modal></area-object-modal>
+		<source-list-modal :layer="currentLayer"></source-list-modal>
+		<source-modal :layer="sourceModalArguments.layer" :points="sourceModalArguments.points"></source-modal>
+		<message-modal></message-modal>
 	</main>
 </template>
 
@@ -31,6 +34,10 @@ import GrdAnimationModal from "../components/modals/GrdAnimationModal"
 import Viewer from "../components/Viewer"
 import LayersStore from '../helpers/LayersStore'
 import ChangeManager from "../ChangeManager";
+import SourceModal from "../components/modals/SourceModal";
+import SourceListModal from "../components/modals/SourceListModal";
+import CreateSourceCoordinates from "../actions/CreateSourceCoordinates";
+import MessageModal from "../components/modals/MessageModal";
 import { GRD } from '../helpers/Layers'
 import Keys from '../utils/Keys'
 
@@ -39,7 +46,11 @@ export default {
 	data() {
 		return {
 			selectedLayer: 0,
-			layerStore: LayersStore.getInstance()
+			layerStore: LayersStore.getInstance(),
+			sourceModalArguments: {
+				points: null,
+				layer: null
+			}
 		}
 	},
 	components: {
@@ -49,7 +60,10 @@ export default {
 		Viewer,
 		LayersListPanel,
 		GrdAnimationModal,
-		VectorModal
+		VectorModal,
+		SourceModal,
+		MessageModal,
+		SourceListModal
 	},
 	methods: {
 		undo() {
@@ -72,6 +86,23 @@ export default {
 		electron.ipcRenderer.on('addAreaObject', (event) => {
 			this.$modal.show('area-object-modal')
 		});
+		electron.ipcRenderer.on('addSource', (event) => {
+			let layer = this.currentLayer;
+
+			if(layer) {
+				let action = new CreateSourceCoordinates(layer)
+				action.execute((points) => {
+					this.sourceModalArguments.points = points;
+					this.sourceModalArguments.layer = layer;
+
+					this.$modal.show('source-modal')
+				});
+			} else {
+				this.$store.commit('setMessage', 'Не выбран ни один слой. Выберите слой в правой панели')
+				this.$modal.show('message-modal')
+			}
+		});
+
 		// electron.ipcRenderer.on('exportAsGRD', (event) => {
 		// 	electron.remote.dialog.showSaveDialog({
 		// 		filters: [
@@ -86,6 +117,12 @@ export default {
 		// 	});
 		// });
 	},
+
+	computed: {
+		currentLayer() {
+			return this.layerStore.layers[this.selectedLayer];
+		}
+	}
 }
 </script>
 
