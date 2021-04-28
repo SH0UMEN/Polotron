@@ -77,11 +77,17 @@ app.on('ready', () => {
             {
               label: 'Добавить источник',
               click: () => {
-                mainWindow.webContents.send('addSource')
+                mainWindow.webContents.send('addSource');
+              }
+            },
+            {
+              label: 'Подогнать под размер экрана',
+              click: () => {
+                mainWindow.webContents.send('unzoom');
               }
             }
           ]
-        }
+        },
       ];
 
   let m = menu.buildFromTemplate(menuTemplate);

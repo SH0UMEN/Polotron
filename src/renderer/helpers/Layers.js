@@ -201,7 +201,7 @@ export class GRDAnimation extends Layer {
     read() {
         return new Promise((resolve, reject) => {
             for(let file of this.filename) {
-                let frame = new GRD(file, file, this.levels, this.clipping, this.palette);
+                let frame = new GRD(file, file, this.levels, this.palette, this.clipping);
 
                 frame.readSync();
                 this.frames.push(frame);
