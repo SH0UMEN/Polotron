@@ -8,6 +8,10 @@ export class Layer {
     isDrawed = false;
     hidden = false;
 
+    isGRD() {
+        return false;
+    }
+
     constructor(title, type) {
         this.title = title;
         this.type = type;
@@ -239,7 +243,7 @@ export class GRDAnimation extends Layer {
 }
 
 export class GRD extends Layer {
-    Nx; Ny; Zmin; Zmax; Xmin; Xmax; Ymin; Ymax; data = []; sources = [];
+    Nx; Ny; Zmin; Zmax; Xmin; Xmax; Ymin; Ymax; data = []; sources = []; hydrography;
 
     constructor(title, filename, levels, palette, clipping) {
         super(title, "GRD");
@@ -339,6 +343,10 @@ export class GRD extends Layer {
 
         ctx.putImageData(imageData, 0, 0);
         this.isDrawed = true;
+    }
+
+    isGRD() {
+        return true;
     }
 
     readSync(callback) {
@@ -441,6 +449,14 @@ export class GRD extends Layer {
 
     getSources() {
         return this.sources;
+    }
+
+    setHydrography(hydrography) {
+        this.hydrography = hydrography;
+    }
+
+    getHydrography() {
+        return this.hydrography;
     }
 
     removeSource(source) {

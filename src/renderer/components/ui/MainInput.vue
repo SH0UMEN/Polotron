@@ -1,6 +1,8 @@
 <template>
     <label class="main-input">
-        <input step="any" class="main-input__input" :placeholder="placeholder"
+		<textarea v-if="type == 'textarea'" class="main-input__input" :placeholder="placeholder"
+				  :type="type" v-model="tValue" @input="input"></textarea>
+        <input v-else step="any" class="main-input__input" :placeholder="placeholder"
                :type="type" v-model="tValue" @input="input">
     </label>
 </template>
@@ -20,7 +22,8 @@
             value: {
                 required: true,
                 type: [String, Number],
-            }
+            },
+			disabled: Boolean
         },
         data() {
             return {

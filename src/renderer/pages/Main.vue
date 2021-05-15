@@ -13,9 +13,11 @@
 		<grd-props-modal></grd-props-modal>
 		<grd-animation-modal></grd-animation-modal>
 		<vector-modal></vector-modal>
+		<hydrography-diagram :layer="currentLayer"></hydrography-diagram>
 		<area-object-modal></area-object-modal>
 		<source-list-modal :layer="currentLayer"></source-list-modal>
 		<source-modal :layer="sourceModalArguments.layer" :points="sourceModalArguments.points"></source-modal>
+		<hydrograph-modal :layer="currentLayer"></hydrograph-modal>
 		<message-modal></message-modal>
 	</main>
 </template>
@@ -38,6 +40,8 @@ import SourceModal from "../components/modals/SourceModal";
 import SourceListModal from "../components/modals/SourceListModal";
 import CreateSourceCoordinates from "../actions/CreateSourceCoordinates";
 import MessageModal from "../components/modals/MessageModal";
+import HydrographModal from "../components/modals/HydrographModal";
+import HydrographyDiagram from "../components/modals/HydrographyDiagramModal";
 import { GRD } from '../helpers/Layers'
 import Keys from '../utils/Keys'
 
@@ -56,6 +60,8 @@ export default {
 	components: {
 		AreaObjectModal,
 		GrdModal,
+		HydrographModal,
+		HydrographyDiagram,
 		GrdPropsModal,
 		Viewer,
 		LayersListPanel,

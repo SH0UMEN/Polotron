@@ -66,6 +66,15 @@ app.on('ready', () => {
           ]
         },
         {
+          label: "Изменить",
+          submenu: [
+            { label: "Вырезать", accelerator: "CmdOrCtrl+X", selector: "cut:" },
+            { label: "Копировать", accelerator: "CmdOrCtrl+C", selector: "copy:" },
+            { label: "Вставить", accelerator: "CmdOrCtrl+V", selector: "paste:" },
+            { label: "Выбрать всё", accelerator: "CmdOrCtrl+A", selector: "selectAll:" }
+          ]
+        },
+        {
           label: 'Действия',
           submenu: [
             {

@@ -16,14 +16,20 @@
         </draggable>
 
         <context-menu>
-            <vue-context ref="menu">
+            <vue-context ref="menu" v-if="currentLayer != null">
                 <li>
                     <button @click="openSettingsWindow">Настройки</button>
                 </li>
-				<li v-if="layersStore.layers[selectedLayer] instanceof GRD">
+				<li v-if="currentLayer.isGRD()">
 					<button @click="openSources">Список источников</button>
 				</li>
-                <li v-if="layersStore.layers[selectedLayer] instanceof GRD">
+				<li v-if="currentLayer.isGRD()">
+					<button @click="openHydrography">Построить гидрограф</button>
+				</li>
+				<li v-if="currentLayer.isGRD() && currentLayer.getHydrography() != null">
+					<button @click="openHydrographyDiagram">Просмотр гидрографа</button>
+				</li>
+                <li v-if="currentLayer.isGRD()">
 					<button @click="exportGRD">Экспорт</button>
 				</li>
                 <li>
@@ -39,7 +45,6 @@
     import LayersStore from '../../helpers/LayersStore'
     import ContextMenu from '../ui/ContextMenu'
     import VueContext from 'vue-context'
-	import { GRD } from '../../helpers/Layers'
 
 	const electron = require('electron'),
 		  path = require('path');
@@ -61,7 +66,6 @@
                 layersStore: LayersStore.getInstance(),
                 layersID: this.$store.state.Layers.layers,
                 selectedLayer: 0,
-				GRD: GRD
             }
         },
 	    watch: {
@@ -77,6 +81,9 @@
 				set(val) {
 					this.$emit('input', val);
 				}
+			},
+			currentLayer() {
+				return this.layersStore.layers[this.selectedLayer];
 			}
 	    },
         methods: {
@@ -91,10 +98,17 @@
             },
             openMenu(e, id) {
                 this.$refs.menu.open(e);
+				this.selectedLayer = 0;
                 this.selectedLayer = id;
             },
 			openSources() {
-            	this.$modal.show('source-list-modal')
+            	this.$modal.show('source-list-modal');
+			},
+			openHydrography() {
+				this.$modal.show('hydrography-modal');
+			},
+			openHydrographyDiagram() {
+				this.$modal.show('hydrography-diagram-modal');
 			},
             openSettingsWindow() {
                 let layer = this.layersStore.layers[this.selectedLayer];
