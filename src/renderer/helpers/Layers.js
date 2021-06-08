@@ -98,7 +98,7 @@ export class GRDVectorLayer extends Layer {
     draw() {
         for(let vector of this.vectors) {
             this.lines.push(new AnimatedLine([vector[0], vector[1],
-                vector[0]+vector[2]*50, vector[1]-vector[3]*50], ''))
+                vector[0]+vector[2]*80, vector[1]-vector[3]*80], ''))
         }
 
         this.drawing = true;
@@ -136,9 +136,9 @@ export class GRDVectorLayer extends Layer {
                                     fs.readSync(y, yBuffer, 0, 4*this.Ny*this.Nx, 56);
 
                                     for(let y = this.Ny-1; y > -1; y--) {
-                                        if(y % 8 == 0) {
+                                        if(y % 7 == 0) {
                                             for(let x = 0; x < this.Nx; x++) {
-                                                if(x % 8 == 0) {
+                                                if(x % 7 == 0) {
                                                     let h = hBuffer.readFloatLE(4*count);
 
                                                     if(h != 0) {

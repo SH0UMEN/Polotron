@@ -19,7 +19,7 @@ export default class Line {
         gradient.addColorStop(this.phase + 0.2 > 1 ? 1 : this.phase + 0.2, color);
         gradient.addColorStop(this.phase + 0.2001 > 1 ? 1 : this.phase + 0.2001, "transparent");
         ctx.strokeStyle = gradient;
-        ctx.lineWidth = 4;
+        ctx.lineWidth = 8;
         ctx.beginPath();
         ctx.moveTo(this.placement[0], this.placement[1]);
         ctx.lineTo(this.placement[2], this.placement[3]);
