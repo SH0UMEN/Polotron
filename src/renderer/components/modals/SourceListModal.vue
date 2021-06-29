@@ -3,7 +3,7 @@
 		<h3 v-if="sources.length == 0">Слой "{{ this.layer ? this.layer.title : '' }}" не содержит источников</h3>
 		<div v-else class="source__list">
 			<div class="source__list-item" v-for="source in sources">
-				<span>{{ source.getTitle() }}</span>
+				<span>{{ source.getTitle() }} [({{ source.getPoints()[0][0] }};{{ source.getPoints()[0][1] }}), ({{ source.getPoints()[1][0] }};{{ source.getPoints()[1][1] }})]</span>
 				<main-button title='Удалить источник' @click="removeSource(source)" class="modal__close">&times;</main-button>
 			</div>
 		</div>

@@ -6,10 +6,16 @@ export class Source {
 
 		for(let i = 0; i < sources.length; i++) {
 			data += sources[i].angle + '\n';
-			data += sources[i].points[0][0] + '\n';
-			data += sources[i].points[1][0] + '\n';
-			data += sources[i].points[0][1] + '\n';
-			data += sources[i].points[1][1];
+
+			let x_min = Math.min(sources[i].points[0][0], sources[i].points[1][0]);
+			let x_max = Math.max(sources[i].points[0][0], sources[i].points[1][0]);
+			let y_min = Math.min(sources[i].points[0][1], sources[i].points[1][1]);
+			let y_max = Math.max(sources[i].points[0][1], sources[i].points[1][1]);
+
+			data += x_min + '\n';
+			data += x_max + '\n';
+			data += y_min + '\n';
+			data += y_max;
 
 			if(i < sources.length-1)
 				data += '\n';
